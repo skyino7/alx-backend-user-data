@@ -74,6 +74,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         auth_plugin='mysql_native_password'
     )
 
+
 if __name__ == "__main__":
     database = get_db()
     cursor = database.cursor()
