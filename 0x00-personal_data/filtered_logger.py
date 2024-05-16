@@ -71,6 +71,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         password=password,
         host=host,
         database=db_name,
+        auth_plugin='mysql_native_password'
     )
 
 
