@@ -75,7 +75,10 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     )
 
 
-if __name__ == "__main__":
+def main() -> None:
+    """main function that takes no arguments
+    and returns nothing.
+    """
     database = get_db()
     cursor = database.cursor()
     cursor.execute("SELECT * FROM users;")
@@ -88,3 +91,8 @@ if __name__ == "__main__":
         log.info(rows)
     cursor.close()
     database.close()
+
+
+if __name__ == "__main__":
+    """Main"""
+    main()
