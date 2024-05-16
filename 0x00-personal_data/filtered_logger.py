@@ -7,6 +7,8 @@ returns the log message obfuscated
 import re
 from typing import List
 import logging
+import mysql.connector
+import os
 
 
 def filter_datum(fields: List[str], redaction: str,
@@ -54,3 +56,34 @@ def get_logger() -> logging.Logger:
     stream_h.setFormatter(formatter)
     logger.addHandler(stream_h)
     return logger
+
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """
+    Returns a connector to the database
+    """
+    username = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
+    password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
+    host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
+    db_name = os.getenv("PERSONAL_DATA_DB_NAME")
+    return mysql.connector.connect(
+        user=username,
+        password=password,
+        host=host,
+        database=db_name,
+        auth_plugin='mysql_native_password'
+    )
+
+if __name__ == "__main__":
+    database = get_db()
+    cursor = database.cursor()
+    cursor.execute("SELECT * FROM users;")
+    log = get_logger()
+    for row in cursor:
+        data = []
+        for des, val in zip(cursor.description, row):
+            data.append(f"{des[0]}={str(val)}")
+        rows = "; ".join(data)
+        log.info(rows)
+    cursor.close()
+    database.close()
