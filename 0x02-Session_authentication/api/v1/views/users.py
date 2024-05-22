@@ -126,7 +126,6 @@ def update_user(user_id: str = None) -> str:
                  strict_slashes=False)
 def get_user(user_id):
     """ Retrieves a user """
-    user = User.get(user_id)
     if user_id == 'me':
         if request.current_user is None:
             abort(404)
