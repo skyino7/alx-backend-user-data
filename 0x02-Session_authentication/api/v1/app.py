@@ -19,9 +19,9 @@ auth_type = os.getenv('AUTH_TYPE')
 if auth_type == 'auth':
     from api.v1.auth.auth import Auth
     auth = Auth()
-elif auth_type == 'basic_auth':
-    from api.v1.auth.basic_auth import BasicAuth
-    auth = BasicAuth()
+elif auth_type == 'session_auth':
+    from api.v1.auth.session_auth import SessionAuth
+    auth = SessionAuth()
 
 
 @app.errorhandler(404)
@@ -51,14 +51,7 @@ def before_request() -> str:
     """
     if auth is None:
         return
-    excluded_paths = ['/api/v1/status/',
-                      '/api/v1/unauthorized/',
-                      '/api/v1/forbidden/']
-    if auth.require_auth(request.path, excluded_paths):
-        if not auth.authorization_header(request):
-            abort(401)
-        if not auth.current_user(request):
-            abort(403)
+
     if auth:
         request.current_user = auth.current_user(request)
 
