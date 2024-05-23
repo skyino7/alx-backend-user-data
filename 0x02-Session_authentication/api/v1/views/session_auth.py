@@ -17,11 +17,18 @@ def login():
     password = request.form.get('password')
     if not email:
         return jsonify({"error": "email missing"}), 400
-    if not password:
+
+    if not password or len(password.strip()) == 0:
         return jsonify({"error": "password missing"}), 400
-    user = User.search({'email': email})
-    if not user or len(user) == 0:
+
+    try:
+        user = User.search({'email': email})
+    except Exception:
         return jsonify({"error": "no user found for this email"}), 404
+
+    if len(user) == 0:
+        return jsonify({"error": "no user found for this email"}), 404
+
     user = user[0]
     if not user.is_valid_password(password):
         return jsonify({"error": "wrong password"}), 401
