@@ -22,9 +22,12 @@ if auth_type == 'auth':
 elif auth_type == 'basic_auth':
     from api.v1.auth.basic_auth import BasicAuth
     auth = BasicAuth()
-else:
+elif auth_type == 'session_auth':
     from api.v1.auth.session_auth import SessionAuth
     auth = SessionAuth()
+elif auth_type == 'session_exp_auth':
+    from api.v1.auth.session_exp_auth import SessionExpAuth
+    auth = SessionExpAuth()
 
 
 @app.errorhandler(404)
@@ -48,7 +51,8 @@ def forbidden(error) -> str:
 
 @app.before_request
 def before_request() -> str:
-    """ Before request handler
+    """
+    Before request handler
     """
     if auth:
         excluded_paths = ['/api/v1/status/',
@@ -62,8 +66,6 @@ def before_request() -> str:
             if auth.current_user(request) is None:
                 abort(403)
         request.current_user = auth.current_user(request)
-    else:
-        return None
 
 
 if __name__ == "__main__":

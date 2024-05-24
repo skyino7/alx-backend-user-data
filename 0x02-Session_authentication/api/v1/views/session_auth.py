@@ -2,7 +2,7 @@
 """
 Session authentication
 """
-from flask import Blueprint, jsonify, request, abort, make_response
+from flask import Blueprint, jsonify, request, abort
 import os
 from models.user import User
 from api.v1.views import app_views
@@ -36,9 +36,9 @@ def login():
 
     from api.v1.app import auth
     session_id = auth.create_session(user.id)
-    response = make_response(user.to_json())
+    response = jsonify(user.to_json())
     response.set_cookie(os.getenv('SESSION_NAME'), session_id)
-    return response
+    return response, 200
 
 
 @app_views.route('/auth_session/logout', methods=['DELETE'],
