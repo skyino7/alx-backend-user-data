@@ -50,7 +50,7 @@ class DB:
             add_user = None
         return add_user
 
-    def find_user_by(self, **kwargs) -> TypeVar('User'):
+    def find_user_by(self, **kwargs: dict) -> User:
         """find a user based on the keywords args and return
             the first row
         """
