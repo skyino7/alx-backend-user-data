@@ -49,7 +49,7 @@ class DB:
             add_user = None
         return add_user
 
-    def find_user_by(self, **kwargs: dict) -> User:
+    def find_user_by(self, **kwargs) -> User:
         """
         Returns a User object
         """
