@@ -50,13 +50,12 @@ class DB:
             add_user = None
         return add_user
 
-    def find_user_by(self, **kwargs) -> User:
+    def find_user_by(self, **kwargs) -> TypeVar('User'):
         """find a user based on the keywords args and return
             the first row
         """
-        session = self._session
         try:
-            user = session.query(User).filter_by(**kwargs).first()
+            user = self._session.query(User).filter_by(**kwargs).first()
             if not user:
                 raise NoResultFound
             return user
