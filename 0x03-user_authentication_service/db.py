@@ -9,6 +9,7 @@ from sqlalchemy.orm.session import Session
 from user import Base, User
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.exc import InvalidRequestError
+from typing import TypeVar
 
 
 class DB:
@@ -49,7 +50,7 @@ class DB:
             add_user = None
         return add_user
 
-    def find_user_by(self, **kwargs: dict) -> User:
+    def find_user_by(self, **kwargs) -> TypeVar('User'):
         """find a user based on the keywords args and return
             the first row
         """
