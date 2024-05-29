@@ -109,4 +109,4 @@ class Auth:
             else:
                 return None
         except NoResultFound:
-            return None
+            raise ValueError
