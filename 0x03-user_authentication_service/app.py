@@ -33,7 +33,7 @@ def users():
 @app.route('/sessions', methods=['POST'], strict_slashes=False)
 def login():
     """
-    Login
+    Logs User in and creates session
     """
     email = request.form.get('email')
     password = request.form.get('password')
